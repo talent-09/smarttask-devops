@@ -1,0 +1,91 @@
+ 
+services:
+
+  # ==========================================
+  # FRONTEND
+  # ==========================================
+
+  frontend:
+
+    image: myfrontend:latest
+
+    container_name: myfrontend
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - backend
+
+    networks:
+      - myreseaudocker
+
+
+  # ==========================================
+  # BACKEND
+  # ==========================================
+
+  backend:
+
+    image: mybackend:latest
+
+    container_name: mybackend
+
+    ports:
+      - "5000:5000"
+
+    environment:
+
+      DB_HOST: mysql
+      DB_USER: bamba
+      DB_PASSWORD: bamba
+      DB_NAME: db_bamba
+
+    depends_on:
+      - mysql
+
+    networks:
+      - myreseaudocker
+
+
+  # ==========================================
+  # MYSQL
+  # ==========================================
+
+  mysql:
+
+    image: mysql:latest
+
+    container_name: mysql
+
+    environment:
+
+      MYSQL_ROOT_PASSWORD: bamba
+      MYSQL_DATABASE: db_bamba
+      MYSQL_USER: bamba
+      MYSQL_PASSWORD: bamba
+
+    volumes:
+
+      - mysql_data:/var/lib/mysql
+
+    networks:
+      - myreseaudocker
+
+
+# ==========================================
+# NETWORK
+# ==========================================
+
+networks:
+
+  myreseaudocker:
+
+
+# ==========================================
+# VOLUME
+# ==========================================
+
+volumes:
+
+  mysql_data:
